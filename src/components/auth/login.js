@@ -27,29 +27,34 @@ class Login extends React.Component {
 
   render() {
     return (
-      <View style={styles.viewStyle}>
-        <Content>
-          <Form>
-            <Item floatingLabel>
-              <Label>Email</Label>
-              <Input autoCapitalize={'none'} onChangeText={text => this.handleChange('email', text)} />
-            </Item>
-            <Item floatingLabel last>
-              <Label>Password</Label>
-              <Input autoCapitalize={'none'} onChangeText={text => this.handleChange('password', text)} />
-            </Item>
-            <Button block dark onPress={this.handleLogin}><Text>Login</Text></Button>
-          </Form>
-        </Content>
-      </View>
+      <Content contentContainerStyle={styles.contentStyle}>
+        <Form>
+          <Item floatingLabel style={styles.labelItem}>
+            <Label>Email</Label>
+            <Input autoCapitalize={'none'} onChangeText={text => this.handleChange('email', text)} />
+          </Item>
+          <Item floatingLabel style={styles.labelItem}>
+            <Label>Password</Label>
+            <Input autoCapitalize={'none'} onChangeText={text => this.handleChange('password', text)} />
+          </Item>
+          <Button style={styles.loginButton} block dark onPress={this.handleLogin}><Text>Login</Text></Button>
+        </Form>
+      </Content>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  viewStyle: {
+  contentStyle: {
+    flex: 1,
+    padding: 20,
     justifyContent: 'center',
-    alignItems: 'center',
+  },
+  labelItem: {
+    marginLeft: 0,
+  },
+  loginButton: {
+    marginTop: 10,
   }
 });
 

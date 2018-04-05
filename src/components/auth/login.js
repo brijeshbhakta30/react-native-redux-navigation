@@ -16,7 +16,10 @@ class Login extends React.Component {
     const { credentials } = this.state;
     const { loginUser, navigation } = this.props;
     loginUser(credentials)
-      .then(() => navigation.navigate('App'));
+      .then(() => navigation.navigate('App'))
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   handleChange = (name, value) => {

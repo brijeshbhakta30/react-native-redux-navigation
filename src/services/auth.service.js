@@ -1,7 +1,7 @@
-import axios from 'axios';
+import request from './request';
 
 export function loginUser(credentials) {
-  return axios.post('/posts', credentials)
+  return request.post('/api/auth/login', credentials)
     .then(({ data }) => data);
 }
 

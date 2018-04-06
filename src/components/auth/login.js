@@ -1,25 +1,28 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Button, Content, Form, Item, Input, Label, Text } from 'native-base';
+import { View, StyleSheet,TextInput } from 'react-native';
+import { Button, Content, Form, Icon, Item, Input, Label, Text } from 'native-base';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import validator from 'validator';
 import { loginUser } from '../../redux/actions/auth.action';
 
 class Login extends React.Component {
 
   state = {
     credentials: {},
+    error: {},
+    errorMessage: '',
   };
 
   handleLogin = () => {
     const { credentials } = this.state;
     const { loginUser, navigation } = this.props;
-    loginUser(credentials)
-      .then(() => navigation.navigate('App'))
-      .catch((e) => {
-        console.log(e);
-      });
+    if (this.validateCredentials(credentials)) {
+      loginUser(credentials)
+        .then(() => navigation.navigate('App'))
+        .catch((e) => this.setState({ errorMessage: e.error }));
+    }
   };
 
   handleChange = (name, value) => {
@@ -28,18 +31,30 @@ class Login extends React.Component {
     this.setState({ credentials });
   };
 
+  validateCredentials = ({ email, password }) => {
+    const error = {};
+    if (!email || (email && !validator.isEmail(email))) error.email = true;
+    if (!password) error.password = true;
+    this.setState({ error, errorMessage: '' });
+    return !_.keys(error).length;
+  };
+
   render() {
+    const { credentials, error, errorMessage } = this.state;
     return (
       <Content contentContainerStyle={styles.contentStyle}>
         <Form>
-          <Item floatingLabel style={styles.labelItem}>
+          <Item floatingLabel style={styles.labelItem} error={!!error.email}>
             <Label>Email</Label>
-            <Input autoCapitalize={'none'} onChangeText={text => this.handleChange('email', text)} />
+            <Input autoCapitalize={'none'} value={credentials.email} onChangeText={text => this.handleChange('email', text)} />
           </Item>
-          <Item floatingLabel style={styles.labelItem}>
+          <Item floatingLabel style={styles.labelItem} error={!!error.password}>
             <Label>Password</Label>
-            <Input autoCapitalize={'none'} onChangeText={text => this.handleChange('password', text)} />
+            <Input autoCapitalize={'none'} secureTextEntry={true} value={credentials.password} onChangeText={text => this.handleChange('password', text)} />
           </Item>
+          {errorMessage ? <View style={{ marginVertical: 10 }}>
+            <Label style={styles.errorLabel}>Password</Label>
+          </View> : ''}
           <Button style={styles.loginButton} block dark onPress={this.handleLogin}><Text>Login</Text></Button>
         </Form>
       </Content>
@@ -58,7 +73,10 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     marginTop: 10,
-  }
+  },
+  errorLabel: {
+    color: 'red',
+  },
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

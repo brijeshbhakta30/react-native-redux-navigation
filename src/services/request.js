@@ -1,4 +1,4 @@
-const BASE_URL = 'http://c60a3445.ngrok.io';
+const BASE_URL = 'https://20dd12d8.ngrok.io';
 
 function getQueryString(params) {
   return Object.keys(params)
@@ -29,7 +29,7 @@ const makeAPICall = ({ url, method = 'GET', headers: header = {}, data = {} }) =
     url = BASE_URL + url;
   }
 
-  fetch(url, params)
+  return fetch(url, params)
     .then((response) => {
       return response.json()
         .then(data => (response.status >= 200 && response.status < 400) ? resolve(data) : reject(data));

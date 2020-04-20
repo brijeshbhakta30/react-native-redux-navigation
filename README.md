@@ -1,5 +1,5 @@
-# REACT-NATIVE-REDUX-REACT-NAVIGATION
-Dillinger is a cloud-enabled, mobile-ready, offline-storage, AngularJS powered HTML5 Markdown editor.
+# REACT-NATIVE-REDUX-NAVIGATION
+Boilerplate code for react native with redux integration and react navigation. It has all the latest libraries and has auth flow integrated.
 
 ### Tech Stack
   - [ReactJS](https://reactjs.org/)
